@@ -15,14 +15,14 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
             }
         }
 
         stage('Test') {
             steps {
-                bat """
+                sh """
                     docker run -d --name test-container -p 5001:5000 ${IMAGE_NAME}:${IMAGE_TAG}
                     timeout /t 5
                     curl -f http://localhost:5001/health || exit 1
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                bat """
+                sh """
                     docker stop flask-app || exit 0
                     docker rm flask-app || exit 0
                     docker run -d --name flask-app -p 5000:5000 ${IMAGE_NAME}:latest
@@ -45,7 +45,7 @@ pipeline {
 
     post {
         always {
-            bat "docker system prune -f || exit 0"
+            sh "docker system prune -f || exit 0"
         }
         success {
             echo "Pipeline succeeded! App is running on http://localhost:5000"
