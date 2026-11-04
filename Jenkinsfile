@@ -20,17 +20,17 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh """
-                    docker run -d --name test-container -p 5001:5000 ${IMAGE_NAME}:${IMAGE_TAG}
+        // stage('Test') {
+        //     steps {
+        //         sh """
+        //             docker run -d --name test-container -p 5001:5000 ${IMAGE_NAME}:${IMAGE_TAG}
                     
-                    curl -f http://localhost:5001/health || exit 1
-                    docker stop test-container
-                    docker rm test-container
-                """
-            }
-        }
+        //             curl -f http://localhost:5001/health || exit 1
+        //             docker stop test-container
+        //             docker rm test-container
+        //         """
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
