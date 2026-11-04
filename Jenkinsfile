@@ -25,7 +25,7 @@ pipeline {
                 sh """
                     docker run -d --name test-container -p 5001:5000 ${IMAGE_NAME}:${IMAGE_TAG}
                     
-                    // curl -f http://localhost:5001/health || exit 1
+                    curl -f http://localhost:5001/health || exit 1
                     docker stop test-container
                     docker rm test-container
                 """
@@ -37,7 +37,7 @@ pipeline {
                 sh """
                     docker stop flask-app || exit 0
                     docker rm flask-app || exit 0
-                    docker run -d --name flask-app -p 5001:5000 ${IMAGE_NAME}:latest
+                    docker run -d --name flask-app -p 5002:5000 ${IMAGE_NAME}:latest
                 """
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             sh "docker system prune -f || exit 0"
         }
         success {
-            echo "Pipeline succeeded! App is running on http://localhost:5001"
+            echo "Pipeline succeeded! App is running on http://localhost:5002"
         }
         failure {
             echo "Pipeline failed"
