@@ -7,7 +7,7 @@ def index():
     return "flask cd program for testing jenkins pipeline 14"
 
 @app.route('/new')
-def index():
+def new():
     return "new feature added for testing jenkins pipeline"
 
 
