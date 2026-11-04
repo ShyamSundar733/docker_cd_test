@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh """
                     docker run -d --name test-container -p 5001:5000 ${IMAGE_NAME}:${IMAGE_TAG}
-                    timeout /t 5
+                    
                     curl -f http://localhost:5001/health || exit 1
                     docker stop test-container
                     docker rm test-container
